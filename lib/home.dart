@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'getcount.dart';
 import 'location.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -7,13 +9,18 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  var position, address;
+  String address;
   void setuplocation() async {
     Location instance = new Location();
     await instance.getlocation();
-    position = instance.position;
     address = instance.address;
-    setState(() {});
+    //count
+    GetCount countinstance = new GetCount();
+    countinstance.getcount(address);
+
+    Navigator.pushReplacementNamed(context, '/main_page', arguments: {
+      'address': address,
+    });
   }
 
   @override
@@ -25,22 +32,10 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: <Widget>[
-            Padding(
-                padding: EdgeInsets.all(50),
-                child: Center(
-                    child: Text(
-                  '$address',
-                  style: TextStyle(
-                    fontSize: 40,
-                    color: Colors.black,
-                  ),
-                )))
-          ],
-        ),
-      ),
-    );
+        backgroundColor: Colors.black,
+        body: SpinKitFoldingCube(
+          color: Colors.white,
+          size: 50.0,
+        ));
   }
 }
